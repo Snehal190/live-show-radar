@@ -1,0 +1,7 @@
+.env*
+!.env.example
+.localdb
+.agents
+.claude
+.next
+node_modules
