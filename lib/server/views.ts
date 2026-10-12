@@ -200,10 +200,16 @@ export async function getStatus() {
   };
 }
 
+const QUOTA_NOISE = /\b429\b|RESOURCE_EXHAUSTED|exceeded your current quota|rate.?limit/i;
+
+export function isQuotaNoise(error: string | null): boolean {
+  return Boolean(error && QUOTA_NOISE.test(error));
+}
+
 export async function getLiveFeed() {
   const db = getDb();
   const [logs, raw, unmatched, rumourRows] = await Promise.all([
-    db.select().from(syncLog).orderBy(desc(syncLog.startedAt)).limit(120),
+    db.select().from(syncLog).orderBy(desc(syncLog.startedAt)).limit(200),
     db.select().from(serpRawEvents).orderBy(desc(serpRawEvents.fetchedAt), desc(serpRawEvents.id)).limit(80),
     db
       .select()
@@ -218,7 +224,12 @@ export async function getLiveFeed() {
     ? await db.select({ id: shows.id, eventName: shows.eventName, city: shows.city, startsAt: shows.startsAt, artist: artists.name }).from(shows).innerJoin(artists, eq(artists.id, shows.artistId)).where(inArray(shows.id, showIds))
     : [];
   return {
-    logs: logs.map((l) => ({ ...l, startedAt: l.startedAt.toISOString(), finishedAt: iso(l.finishedAt) })),
+    // Provider rate-limit/quota rejections (e.g. Gemini search grounding on free keys) are skipped
+    // runs, not app failures, so they are kept in the database but not listed on the Live Feed.
+    logs: logs
+      .filter((l) => !isQuotaNoise(l.error))
+      .slice(0, 120)
+      .map((l) => ({ ...l, startedAt: l.startedAt.toISOString(), finishedAt: iso(l.finishedAt) })),
     raw: raw.map((r) => ({ ...r, fetchedAt: r.fetchedAt.toISOString(), parsedStartsAt: iso(r.parsedStartsAt) })),
     unmatched: unmatched.map((r) => ({ id: r.id, title: r.title, city: r.parsedCity, startsAt: iso(r.parsedStartsAt), fetchedAt: r.fetchedAt.toISOString(), confidence: r.matchConfidence })),
     rumours: rumourRows.map(({ r, artist }) => ({ id: r.id, artist, claim: r.claim, city: r.city, dateText: r.dateText, reason: r.reason, createdAt: r.createdAt.toISOString() })),
