@@ -9,7 +9,7 @@
   body { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; color: #1f2937; margin: 0; font-size: 8.4pt; line-height: 1.32; }
   /* Laid out at 880px and scaled to A4's printable width (192mm ≈ 726px) so each page fits on one sheet. */
   body { width: 880px; }
-  @media print { body { zoom: 0.825; } }
+  @media print { body { zoom: 0.8; } }
   .page { page-break-after: always; }
   .page:last-child { page-break-after: auto; }
   h1 { font-size: 15pt; text-align: center; margin: 0 0 2px; color: #1e2a44; }
@@ -18,7 +18,7 @@
   /* grid */
   table.map { width: 100%; border-collapse: collapse; table-layout: fixed; }
   table.map th { background: #1e2a44; color: #fff; font-size: 7.6pt; padding: 6px 4px; font-weight: 600; }
-  table.map td { border: 1px solid #e5e7eb; vertical-align: middle; padding: 4px; height: 66px; }
+  table.map td { border: 1px solid #e5e7eb; vertical-align: middle; padding: 3px 4px; height: 56px; }
   td.actor { background: #1e2a44; color: #fff; text-align: center; font-weight: 700; font-size: 7.8pt; width: 11%; }
   td.actor small { display: block; font-weight: 400; color: #c7cfe0; font-size: 6.4pt; margin-top: 2px; }
   .box { border: 1px solid; border-radius: 6px; padding: 4px 5px; font-size: 6.6pt; line-height: 1.28; text-align: center; }
@@ -32,7 +32,11 @@
   .r-mail td:not(.actor) { background: #fbeef0; } .r-mail .box { background: #fbe0e0; border-color: #c94a4a; color: #6b1a1a; }
   .r-dash td:not(.actor) { background: #f3f3ee; } .r-dash .box { background: #fbe1da; border-color: #c95a3f; color: #6b2a1a; }
   .r-owl td:not(.actor) { background: #f6f6f6; } .r-owl .box { background: #fff; border-color: #9ca3af; border-style: dashed; color: #374151; }
-  ol.flow { margin: 4px 0 0 16px; padding: 0; } ol.flow li { margin: 1.5px 0; }
+  table.sched { width: 100%; border-collapse: collapse; margin-top: 2px; }
+  table.sched th { background: #1e2a44; color: #fff; text-align: left; padding: 5px 6px; font-size: 7.6pt; }
+  table.sched td { border-bottom: 1px solid #e5e7eb; padding: 5px 6px; font-size: 7.6pt; vertical-align: top; }
+  table.sched tr.hl td { background: #fff7d6; }
+  p.foot { margin-top: 8px; font-size: 7.8pt; background: #eef2fb; border-left: 3px solid #5b74c9; padding: 6px 8px; }
   /* page 2 */
   table.t { width: 100%; border-collapse: collapse; margin-bottom: 4px; }
   table.t th { background: #1e2a44; color: #fff; text-align: left; padding: 4px 6px; font-size: 7.4pt; }
@@ -63,8 +67,8 @@
     </tr>
 
     <tr class="r-sched">
-      <td class="actor">Scheduler<small>(cron-job.org + Vercel Cron)</small></td>
-      <td><div class="box"><b>1</b>Alarm clock: scan every 5 min · Google search daily 09:00 IST · Gemini web check hourly · daily reset 00:05 IST</div></td>
+      <td class="actor">Scheduler<small>(GitHub Actions + Vercel Cron)</small></td>
+      <td><div class="box"><b>1</b>Alarm clock (GitHub Actions + Vercel Cron): alert check every 5 min · Google search 9 AM daily · Gemini news hourly · reset 00:05</div></td>
       <td></td><td></td><td></td><td></td><td></td>
     </tr>
 
@@ -79,7 +83,7 @@
     <tr class="r-api">
       <td class="actor">Live Event API<small>(SerpApi Google · SearchApi.io backup)</small></td>
       <td></td>
-      <td><div class="box"><b>4</b>Asks Google daily: "concerts in Bengaluru / Mumbai / Chennai" and reads the events listings; backup provider steps in if a call fails</div></td>
+      <td><div class="box"><b>4</b>Once a day at 9 AM IST: asks Google (SerpApi) "concerts in Bengaluru / Mumbai / Chennai" — 3 searches. Also on the "Sync now" button</div></td>
       <td></td><td></td><td></td><td></td>
     </tr>
 
@@ -119,22 +123,18 @@
     </tr>
   </table>
 
-  <h2>Flow (step by step)</h2>
-  <ol class="flow">
-    <li>The alarm clock rings: every 5 minutes the app checks for alerts, every morning (09:00 IST) it searches Google, every hour Gemini checks the news, and at 00:05 the day resets.</li>
-    <li>When Karan opens the app, it also checks straight away (never more than once every 2 minutes).</li>
-    <li>The app reads its database: Karan's 60 artists, the city rules, the real shows and the daily sample drops.</li>
-    <li>It asks Google through SerpApi which concerts are coming to Bengaluru, Mumbai and Chennai (SearchApi.io takes over automatically if a call fails).</li>
-    <li>Every hour, Gemini (with Google Search) looks for brand-new announcements, 3 artists per run.</li>
-    <li>The app remembers who Karan loves most, which cities matter, what he was already told and what he tapped.</li>
-    <li>The Detector spots new shows and festival lineups; the Reminder spots early-birds about to open or close, a show next week, a show tonight; one nudge if a critical alert is ignored for 6 hours.</li>
-    <li>Gemini matches each concert to the right artist, writes a fun message and gives a "worth the trip?" verdict for Mumbai/Chennai Must-see shows.</li>
-    <li>Everything is saved with a unique key, so the same email is never sent twice; failed sends are retried up to 5 times.</li>
-    <li>Karan gets an email for every new show; reminder emails come only for shows he tapped "Remind me" or "Going", so his inbox never feels like spam.</li>
-    <li>Karan's screen shows what to grab now, every upcoming show by city, a 6-month calendar, his plans, and proof of every Google search.</li>
-    <li>The owl is just for fun: it flies up and down and says when the app last checked.</li>
-    <li>Karan taps "Got early-bird", "Going", "Remind me" or "Skip" (with a confetti burst), and the app reminds him only about what he cares about.</li>
-  </ol>
+  <h2>When does each thing run? (all times IST)</h2>
+  <table class="sched">
+    <tr><th style="width:17%">When</th><th style="width:22%">Who starts it</th><th>What happens</th><th style="width:25%">API called</th></tr>
+    <tr><td><b>Every 5 minutes</b></td><td>GitHub Actions timer</td><td>Alert check: Detector finds new shows, Reminder finds early-birds closing / show this week / tonight, sends emails</td><td>None for searching (database only); Gemini writes the message; Resend sends the email</td></tr>
+    <tr class="hl"><td><b>9:00 AM daily</b></td><td>GitHub Actions timer</td><td>Google search for new concerts in Bengaluru, Mumbai, Chennai, then an instant alert check</td><td><b>SerpApi</b> — 3 searches a day</td></tr>
+    <tr><td><b>Once a month</b></td><td>Same 9 AM job</td><td>Searches each Must-see artist by name ("Khalid concert India")</td><td><b>SerpApi</b> — 21 searches a month</td></tr>
+    <tr><td><b>Every hour</b></td><td>GitHub Actions timer</td><td>Gemini reads the news for brand-new announcements, 3 artists per run</td><td><b>Gemini Flash</b> + Google Search</td></tr>
+    <tr><td><b>00:05 every night</b></td><td>Vercel Cron</td><td>Refreshes the daily sample drops (1, 3, 5, 7, 9 PM)</td><td>None</td></tr>
+    <tr><td><b>Karan opens the app</b></td><td>Karan</td><td>Quick catch-up alert check (at most once every 2 min)</td><td>None for searching</td></tr>
+    <tr class="hl"><td><b>"Sync now" button</b></td><td>Karan / professor (Live Feed page)</td><td>One live Google search to watch it happen</td><td><b>SerpApi</b> — 1 search, max once an hour</td></tr>
+  </table>
+  <p class="foot"><b>In one line:</b> the timer wakes the app → SerpApi (9 AM) and Gemini (hourly) bring in new shows → the 5-minute alert check spots what's new or urgent → Karan gets an email (new shows always; reminders only if he tapped "Remind me" or "Going") and sees it all on the dashboard. SerpApi budget: ~111 of 250 free searches a month. Every call is secured with a secret key and logged on the Live Feed page.</p>
 </div>
 
 </body>
