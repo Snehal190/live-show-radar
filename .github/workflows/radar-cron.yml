@@ -1,0 +1,40 @@
+# Scheduler for Live Show Radar (free on public repos). Vercel Hobby only runs daily crons,
+# so the frequent jobs run here; the 00:05 IST daily reset stays in vercel.json.
+# Needs repo secret CRON_SECRET and repo variable APP_URL.
+name: Radar scheduler
+
+on:
+  schedule:
+    - cron: "*/5 * * * *" # alert scan: Detector → Reminder → Smart nudge → email
+    - cron: "7 * * * *" # Gemini Flash grounded web scan (hourly)
+    - cron: "30 3 * * *" # SerpApi Google sync, 09:00 IST
+  workflow_dispatch:
+    inputs:
+      job:
+        description: "Which job to run"
+        type: choice
+        options: [scan, web-scan, serp-sync]
+        default: scan
+
+jobs:
+  call:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Pick endpoint
+        id: pick
+        run: |
+          case "${{ github.event.schedule }}" in
+            "7 * * * *") echo "path=web-scan" >> "$GITHUB_OUTPUT" ;;
+            "30 3 * * *") echo "path=serp-sync" >> "$GITHUB_OUTPUT" ;;
+            "*/5 * * * *") echo "path=scan" >> "$GITHUB_OUTPUT" ;;
+            *) echo "path=${{ inputs.job || 'scan' }}" >> "$GITHUB_OUTPUT" ;;
+          esac
+      - name: Call ${{ steps.pick.outputs.path }}
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          APP_URL: ${{ vars.APP_URL }}
+        run: |
+          curl -fsS --max-time 300 -X POST \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            "${APP_URL}/api/cron/${{ steps.pick.outputs.path }}"
