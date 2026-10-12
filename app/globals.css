@@ -1,26 +1,435 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-display);
+  --font-serif: var(--font-display);
+  --font-display: var(--font-inter);
+  --color-ok: var(--ok);
+  --color-chip: var(--chip);
+  --color-hype-2: var(--hype-2);
+  --color-surface-2: var(--surface-2);
+  --color-radar: var(--radar);
+  --color-src-serpapi: var(--src-serpapi);
+  --color-src-gemini: var(--src-gemini);
+  --color-src-known: var(--src-known);
+  --color-src-demo: var(--src-demo);
+  --color-surface: var(--surface);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+
+/* Live Show Radar — "Dark Tech": black canvas, ring-bordered cards, square buttons, pill chips,
+   mono for every number. Only accents: blue #52a8ff (active), green #62c073 (positive), #ededed. */
+:root {
+  --radar: #52a8ff;
+  --ok: #62c073;
+  --surface: #0a0a0a;
+  --surface-2: #111111;
+  --chip: #1f1f1f;
+  --ring-line: rgb(255 255 255 / 0.145);
+  --src-serpapi: #52a8ff;
+  --src-gemini: #ededed;
+  --src-known: #62c073;
+  --src-demo: #999999;
+  --background: #000000;
+  --foreground: #ededed;
+  --card: #0a0a0a;
+  --card-foreground: #ededed;
+  --popover: #0a0a0a;
+  --popover-foreground: #ededed;
+  --primary: #ffffff;
+  --primary-foreground: #121212;
+  --secondary: #1f1f1f;
+  --secondary-foreground: #ededed;
+  --muted: #1f1f1f;
+  --muted-foreground: #999999;
+  --accent: #1f1f1f;
+  --accent-foreground: #ededed;
+  --destructive: #ededed;
+  --border: rgb(255 255 255 / 0.145);
+  --input: rgb(255 255 255 / 0.145);
+  --ring: #52a8ff;
+  --radius: 0.75rem;
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    overflow-x: hidden;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-inter), sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    color: #fff;
+  }
+  ::selection {
+    background: #52a8ff;
+    color: #000;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Cards: #0a0a0a with a 1px ring. */
+.tech-card {
+  background: #0a0a0a;
+  box-shadow: 0 0 0 1px var(--ring-line);
+}
+
+/* Highlight block (was the gradient): ring card lit by a blue radial glow. */
+.bg-hype {
+  background:
+    radial-gradient(60% 120% at 85% 0%, rgb(82 168 255 / 0.22), transparent 70%),
+    radial-gradient(40% 80% at 0% 100%, rgb(82 168 255 / 0.08), transparent 70%),
+    #0a0a0a;
+  box-shadow: 0 0 0 1px rgb(82 168 255 / 0.35);
+}
+.text-hype {
+  color: #999999;
+}
+
+/* Primary CTA: white, softly rounded. */
+.btn-square {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 10px;
+  background: #fff;
+  color: #121212;
+  padding: 8px 12px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.btn-square:hover {
+  background: #e7e7e7;
+}
+
+/* Status chip: pill, #1f1f1f, dot + mono uppercase label. */
+.v-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 100px;
+  background: #1f1f1f;
+  padding: 4px 10px;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #999;
+  white-space: nowrap;
+}
+.v-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  background: #999;
+  flex-shrink: 0;
+}
+
+/* Hero scrim over the glow. */
+.scrim {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.76) 0%, rgba(0, 0, 0, 0) 93.785%);
+}
+
+.stage-lights {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(46rem 28rem at 50% -10rem, rgb(255 214 90 / 0.1), transparent 70%),
+    radial-gradient(50rem 30rem at 50% -12rem, rgb(82 168 255 / 0.1), transparent 70%),
+    #000;
+}
+
+/* Concert spotlights: two warm yellow beams from the rig that sway slowly, plus a light pool. */
+.spotlights {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.spotlights .beam {
+  position: absolute;
+  top: -12vh;
+  width: 46vw;
+  height: 135vh;
+  transform-origin: 50% 0;
+  background: linear-gradient(to bottom, rgb(255 214 90 / 0.3), rgb(255 214 90 / 0.1) 45%, transparent 85%);
+  clip-path: polygon(46% 0, 54% 0, 100% 100%, 0 100%);
+  filter: blur(18px);
+  mix-blend-mode: screen;
+  opacity: 0.75;
+}
+.spotlights .beam.left {
+  left: -6vw;
+  animation: sway-left 11s ease-in-out infinite alternate;
+}
+.spotlights .beam.right {
+  right: -6vw;
+  animation: sway-right 13s ease-in-out infinite alternate;
+}
+.spotlights .beam.center {
+  left: 27vw;
+  width: 46vw;
+  opacity: 0.35;
+  animation: sway-center 17s ease-in-out infinite alternate;
+}
+.spotlights .pool {
+  position: absolute;
+  left: 50%;
+  bottom: -28vh;
+  width: 90vw;
+  height: 50vh;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgb(255 214 90 / 0.1), transparent);
+  filter: blur(10px);
+}
+.spotlights .rig {
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background: #ffe9a6;
+  box-shadow: 0 0 24px 8px rgb(255 214 90 / 0.55);
+}
+@keyframes sway-left {
+  from { transform: rotate(-32deg); }
+  to { transform: rotate(-8deg); }
+}
+@keyframes sway-right {
+  from { transform: rotate(30deg); }
+  to { transform: rotate(6deg); }
+}
+@keyframes sway-center {
+  from { transform: rotate(-14deg); }
+  to { transform: rotate(14deg); }
+}
+
+.glow-critical {
+  box-shadow: 0 0 0 1px rgb(82 168 255 / 0.6), 0 18px 60px -24px rgb(82 168 255 / 0.55);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Dancing fan under a spotlight (120 BPM: one beat = 0.5s) ── */
+.dance-body,
+.dance-head,
+.dance-arm-l,
+.dance-arm-r,
+.dance-leg-l,
+.dance-leg-r,
+.dance-spot {
+  transform-box: view-box;
+}
+.dance-body {
+  animation: dance-bob 0.5s ease-in-out infinite alternate;
+}
+.dance-head {
+  transform-origin: 100px 86px;
+  animation: dance-nod 0.5s ease-in-out infinite alternate;
+}
+.dance-arm-l {
+  transform-origin: 82px 104px;
+  animation: dance-swing 1s ease-in-out infinite alternate;
+}
+.dance-arm-r {
+  transform-origin: 118px 104px;
+  animation: dance-pump 0.5s ease-in-out infinite alternate;
+}
+.dance-leg-l {
+  transform-origin: 92px 158px;
+  animation: dance-step 1s ease-in-out infinite alternate;
+}
+.dance-leg-r {
+  transform-origin: 108px 158px;
+  animation: dance-step 1s ease-in-out infinite alternate-reverse;
+}
+.dance-spot {
+  transform-origin: 100px -60px;
+  animation: dance-sway 4s ease-in-out infinite alternate, dance-flicker 0.5s ease-in-out infinite alternate;
+}
+.dance-pool {
+  animation: dance-flicker 0.5s ease-in-out infinite alternate;
+}
+.dance-lamp {
+  filter: drop-shadow(0 0 6px #ffd65a);
+}
+.dance-note {
+  opacity: 0;
+  animation: dance-note 2.4s ease-out infinite;
+}
+.dance-note-2 {
+  animation-delay: 0.8s;
+}
+.dance-note-3 {
+  animation-delay: 1.6s;
+}
+@keyframes dance-bob {
+  from { transform: translateY(0); }
+  to { transform: translateY(6px); }
+}
+@keyframes dance-nod {
+  from { transform: rotate(-6deg); }
+  to { transform: rotate(6deg); }
+}
+@keyframes dance-swing {
+  from { transform: rotate(-28deg); }
+  to { transform: rotate(38deg); }
+}
+@keyframes dance-pump {
+  from { transform: rotate(-8deg); }
+  to { transform: rotate(22deg); }
+}
+@keyframes dance-step {
+  from { transform: rotate(-10deg); }
+  to { transform: rotate(6deg); }
+}
+@keyframes dance-sway {
+  from { transform: rotate(-5deg); }
+  to { transform: rotate(5deg); }
+}
+@keyframes dance-flicker {
+  from { opacity: 0.75; }
+  to { opacity: 1; }
+}
+@keyframes dance-note {
+  0% { opacity: 0; transform: translateY(0) rotate(0); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-70px) rotate(18deg); }
+}
+
+/* ── Concert vibe ── */
+.text-gold {
+  color: #ffe08a;
+}
+.text-coral {
+  color: #ff8f8f;
+}
+.glow-gold {
+  text-shadow: 0 0 28px rgb(255 214 90 / 0.35);
+}
+
+/* Falling confetti in the hero (pure CSS). */
+.confetti-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.confetti-field i {
+  position: absolute;
+  top: -12px;
+  width: 7px;
+  height: 12px;
+  border-radius: 2px;
+  opacity: 0.85;
+  animation: confetti-fall linear infinite;
+}
+@keyframes confetti-fall {
+  0% { transform: translate3d(0, -20px, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.9; }
+  100% { transform: translate3d(var(--drift, 30px), 105vh, 0) rotate(720deg); opacity: 0; }
+}
+
+/* Equalizer bars. */
+.eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+}
+.eq span {
+  width: 3px;
+  border-radius: 1px;
+  background: #ffe08a;
+  animation: eq 0.9s ease-in-out infinite alternate;
+}
+.eq span:nth-child(2) { animation-delay: -0.3s; background: #ff8f8f; }
+.eq span:nth-child(3) { animation-delay: -0.6s; }
+.eq span:nth-child(4) { animation-delay: -0.15s; background: #52a8ff; }
+@keyframes eq {
+  from { height: 3px; }
+  to { height: 14px; }
+}
+
+/* Festival ticker. */
+.ticker {
+  display: flex;
+  width: max-content;
+  animation: ticker 40s linear infinite;
+}
+@keyframes ticker {
+  to { transform: translateX(-50%); }
 }

@@ -1,0 +1,20 @@
+{
+  "_note": "Applied by scripts/seed.ts on top of data/artist.db. These artists replace festival-lineup filler and have NO India dates in the seed data, so the radar visibly waits for them (live search or the Gemini web scan can still find a new date).",
+  "swaps": [
+    { "artist_id": "A010", "artist_name": "Radiohead", "origin": "International", "country": "UK", "genre": "Alt rock", "priority": "Must-see", "search_aliases": "" },
+    { "artist_id": "A011", "artist_name": "Arctic Monkeys", "origin": "International", "country": "UK", "genre": "Indie rock", "priority": "Must-see", "search_aliases": "" },
+    { "artist_id": "A012", "artist_name": "Tame Impala", "origin": "International", "country": "Australia", "genre": "Psych pop", "priority": "Must-see", "search_aliases": "" },
+    { "artist_id": "A013", "artist_name": "Mitski", "origin": "International", "country": "USA", "genre": "Indie", "priority": "Like", "search_aliases": "" },
+    { "artist_id": "A015", "artist_name": "Phoebe Bridgers", "origin": "International", "country": "USA", "genre": "Indie folk", "priority": "Like", "search_aliases": "" },
+    { "artist_id": "A016", "artist_name": "Bon Iver", "origin": "International", "country": "USA", "genre": "Indie folk", "priority": "Like", "search_aliases": "" },
+    { "artist_id": "A026", "artist_name": "Khruangbin", "origin": "International", "country": "USA", "genre": "Psych funk", "priority": "Like", "search_aliases": "" },
+    { "artist_id": "A030", "artist_name": "Jungle", "origin": "International", "country": "UK", "genre": "Neo-soul / dance", "priority": "Like", "search_aliases": "" },
+    { "artist_id": "A031", "artist_name": "FKJ", "origin": "International", "country": "France", "genre": "Electronic", "priority": "Like", "search_aliases": "French Kiwi Juice" },
+    { "artist_id": "A032", "artist_name": "Beach House", "origin": "International", "country": "USA", "genre": "Dream pop", "priority": "Like", "search_aliases": "" },
+    { "artist_id": "A033", "artist_name": "Men I Trust", "origin": "International", "country": "Canada", "genre": "Dream pop", "priority": "Like", "search_aliases": "" },
+    { "artist_id": "A034", "artist_name": "Peter Cat Recording Co.", "origin": "Indian", "country": "India", "genre": "Indie", "priority": "Like", "search_aliases": "Peter Cat Recording Co|PCRC" },
+    { "artist_id": "A036", "artist_name": "The Local Train", "origin": "Indian", "country": "India", "genre": "Hindi rock", "priority": "Like", "search_aliases": "Local Train" },
+    { "artist_id": "A055", "artist_name": "When Chai Met Toast", "origin": "Indian", "country": "India", "genre": "Indie folk", "priority": "Like", "search_aliases": "" },
+    { "artist_id": "A060", "artist_name": "Lifafa", "origin": "Indian", "country": "India", "genre": "Electronic", "priority": "Like", "search_aliases": "" }
+  ]
+}

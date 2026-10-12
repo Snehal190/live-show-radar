@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Live Show Radar · Components Map</title>
+<style>
+  @page { size: A4; margin: 10mm 9mm; }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; color: #1f2937; margin: 0; font-size: 8.4pt; line-height: 1.32; }
+  /* Laid out at 880px and scaled to A4's printable width (192mm ≈ 726px) so each page fits on one sheet. */
+  body { width: 880px; }
+  @media print { body { zoom: 0.825; } }
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  h1 { font-size: 15pt; text-align: center; margin: 0 0 2px; color: #1e2a44; }
+  .sub { text-align: center; color: #6b7280; font-size: 7.6pt; margin-bottom: 8px; }
+  h2 { font-size: 9.6pt; margin: 10px 0 5px; color: #1e2a44; }
+  /* grid */
+  table.map { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  table.map th { background: #1e2a44; color: #fff; font-size: 7.6pt; padding: 6px 4px; font-weight: 600; }
+  table.map td { border: 1px solid #e5e7eb; vertical-align: middle; padding: 4px; height: 66px; }
+  td.actor { background: #1e2a44; color: #fff; text-align: center; font-weight: 700; font-size: 7.8pt; width: 11%; }
+  td.actor small { display: block; font-weight: 400; color: #c7cfe0; font-size: 6.4pt; margin-top: 2px; }
+  .box { border: 1px solid; border-radius: 6px; padding: 4px 5px; font-size: 6.6pt; line-height: 1.28; text-align: center; }
+  .box b { display: block; font-size: 7.6pt; margin-bottom: 1px; }
+  .r-karan td:not(.actor) { background: #eef2fb; } .r-karan .box { background: #e3e9fb; border-color: #5b74c9; color: #24346b; }
+  .r-sched td:not(.actor) { background: #f4effb; } .r-sched .box { background: #ece2fa; border-color: #8a5cc9; color: #4a2a7a; }
+  .r-data td:not(.actor) { background: #ecf6f6; } .r-data .box { background: #d9eff0; border-color: #2b8a8f; color: #134e52; }
+  .r-api td:not(.actor) { background: #eef3fb; } .r-api .box { background: #dde8f8; border-color: #3d6fb8; color: #1e3d6b; }
+  .r-sys td:not(.actor) { background: #fbf8ec; } .r-sys .box.g { background: #e1f3e3; border-color: #3f9a4d; color: #1d5226; } .r-sys .box.y { background: #fcf0cf; border-color: #c99a25; color: #6b4e08; }
+  .r-ai td:not(.actor) { background: #eef6ee; } .r-ai .box { background: #fbe4ea; border-color: #c94a6e; color: #6b1a33; }
+  .r-mail td:not(.actor) { background: #fbeef0; } .r-mail .box { background: #fbe0e0; border-color: #c94a4a; color: #6b1a1a; }
+  .r-dash td:not(.actor) { background: #f3f3ee; } .r-dash .box { background: #fbe1da; border-color: #c95a3f; color: #6b2a1a; }
+  .r-owl td:not(.actor) { background: #f6f6f6; } .r-owl .box { background: #fff; border-color: #9ca3af; border-style: dashed; color: #374151; }
+  ol.flow { margin: 4px 0 0 16px; padding: 0; } ol.flow li { margin: 1.5px 0; }
+  /* page 2 */
+  table.t { width: 100%; border-collapse: collapse; margin-bottom: 4px; }
+  table.t th { background: #1e2a44; color: #fff; text-align: left; padding: 4px 6px; font-size: 7.4pt; }
+  table.t td { border-bottom: 1px solid #e5e7eb; padding: 3.5px 6px; font-size: 7.4pt; vertical-align: top; }
+  .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 16px; }
+  .note { background: #f3f4f6; border-left: 3px solid #c94a6e; padding: 6px 8px; font-style: italic; font-size: 7.4pt; margin-top: 6px; }
+  .callout { border: 1px dashed #9ca3af; border-radius: 6px; padding: 6px 8px; font-size: 7.4pt; }
+  ul { margin: 2px 0 0 14px; padding: 0; } ul li { margin: 1.5px 0; }
+  .new { display: inline-block; background: #fde68a; color: #6b4e08; border-radius: 3px; padding: 0 3px; font-size: 6.2pt; font-weight: 700; margin-left: 2px; vertical-align: 1px; }
+  p { margin: 3px 0; }
+</style>
+</head>
+<body>
+
+<!-- ───────────── PAGE 1 ───────────── -->
+<div class="page">
+  <h1>Live Show Radar · AI Concert Alert Agent for Karan — Components Map</h1>
+  <div class="sub">Trigger → Input → Context → Processing → AI → Output &nbsp;|&nbsp; Never miss a concert by Karan's 60 favourite artists in Bengaluru, Mumbai and Chennai &nbsp;|&nbsp; v2 · updated 12 Oct 2026</div>
+
+  <table class="map">
+    <tr><th style="width:11%">Actor</th><th>Trigger</th><th>Input</th><th>Context</th><th>Processing</th><th>AI</th><th>Output</th></tr>
+
+    <tr class="r-karan">
+      <td class="actor">Karan<small>(User)</small></td>
+      <td><div class="box"><b>2</b>Karan opens the app; it checks for updates right away (catch-up scan, at most once every 2 min)</div></td>
+      <td></td><td></td><td></td><td></td>
+      <td><div class="box"><b>13</b>Karan taps "Got early-bird", "Going", "Remind me" or "Skip" 🎉 — this decides which reminders reach his inbox</div></td>
+    </tr>
+
+    <tr class="r-sched">
+      <td class="actor">Scheduler<small>(cron-job.org + Vercel Cron)</small></td>
+      <td><div class="box"><b>1</b>Alarm clock: scan every 5 min · Google search daily 09:00 IST · Gemini web check hourly · daily reset 00:05 IST</div></td>
+      <td></td><td></td><td></td><td></td><td></td>
+    </tr>
+
+    <tr class="r-data">
+      <td class="actor">Datasets<small>(Neon Postgres)</small></td>
+      <td></td>
+      <td><div class="box"><b>3</b>artist.db: Karan's 60 artists (44 with dates, 16 "waiting for dates"), the city rules, real shows and daily sample drops</div></td>
+      <td></td><td></td><td></td>
+      <td><div class="box"><b>9</b>Saves everything like a notebook — each alert has a unique key, so Karan never gets the same email twice</div></td>
+    </tr>
+
+    <tr class="r-api">
+      <td class="actor">Live Event API<small>(SerpApi Google · SearchApi.io backup)</small></td>
+      <td></td>
+      <td><div class="box"><b>4</b>Asks Google daily: "concerts in Bengaluru / Mumbai / Chennai" and reads the events listings; backup provider steps in if a call fails</div></td>
+      <td></td><td></td><td></td><td></td>
+    </tr>
+
+    <tr class="r-sys">
+      <td class="actor">System<small>(App Backend)</small></td>
+      <td></td><td></td>
+      <td><div class="box g"><b>6</b>Gets ready: who is Must-see, which cities alert, what Karan was already told, and what he tapped</div></td>
+      <td><div class="box y"><b>7</b>Detector spots new shows &amp; festival lineups; Reminder spots early-birds opening/closing, show week, tonight; one nudge after 6 h</div></td>
+      <td></td><td></td>
+    </tr>
+
+    <tr class="r-ai">
+      <td class="actor">AI Model<small>(Gemini 3.8 Flash)</small></td>
+      <td></td>
+      <td><div class="box"><b>5</b>Every hour Gemini searches the web (Google Search grounding) for brand-new announcements, 3 artists at a time</div></td>
+      <td></td><td></td>
+      <td><div class="box"><b>8</b>Gemini matches each concert to the right artist, writes a fun Hinglish line, and judges "worth the trip?" — never writes dates or prices</div></td>
+      <td></td>
+    </tr>
+
+    <tr class="r-mail">
+      <td class="actor">Email Service<small>(Resend → Karan's inbox:<br />snehalbandi5<br />@gmail.com)</small></td>
+      <td></td><td></td><td></td><td></td><td></td>
+      <td><div class="box"><b>10</b>New-show emails always; reminder emails only for shows Karan tapped "Remind me" or "Going". Who, where, when, early-bird deadline, where to buy</div></td>
+    </tr>
+
+    <tr class="r-dash">
+      <td class="actor">Dashboard<small>(Radar App)</small></td>
+      <td></td><td></td><td></td><td></td><td></td>
+      <td><div class="box"><b>11</b>Radar (urgent early-birds, event stream), Shows, Calendar, Artists, My Plans, Inbox, and a Live Feed proving every Google search</div></td>
+    </tr>
+
+    <tr class="r-owl">
+      <td class="actor">Owl Mascot<small>(UI only, no scanning)</small></td>
+      <td></td><td></td><td></td><td></td><td></td>
+      <td><div class="box"><b>12</b>A cute owl. Tap it: it flies up, hovers, lands, and says when the app last checked. Just for fun — it never searches</div></td>
+    </tr>
+  </table>
+
+  <h2>Flow (step by step)</h2>
+  <ol class="flow">
+    <li>The alarm clock rings: every 5 minutes the app checks for alerts, every morning (09:00 IST) it searches Google, every hour Gemini checks the news, and at 00:05 the day resets.</li>
+    <li>When Karan opens the app, it also checks straight away (never more than once every 2 minutes).</li>
+    <li>The app reads its database: Karan's 60 artists, the city rules, the real shows and the daily sample drops.</li>
+    <li>It asks Google through SerpApi which concerts are coming to Bengaluru, Mumbai and Chennai (SearchApi.io takes over automatically if a call fails).</li>
+    <li>Every hour, Gemini (with Google Search) looks for brand-new announcements, 3 artists per run.</li>
+    <li>The app remembers who Karan loves most, which cities matter, what he was already told and what he tapped.</li>
+    <li>The Detector spots new shows and festival lineups; the Reminder spots early-birds about to open or close, a show next week, a show tonight; one nudge if a critical alert is ignored for 6 hours.</li>
+    <li>Gemini matches each concert to the right artist, writes a fun message and gives a "worth the trip?" verdict for Mumbai/Chennai Must-see shows.</li>
+    <li>Everything is saved with a unique key, so the same email is never sent twice; failed sends are retried up to 5 times.</li>
+    <li>Karan gets an email for every new show; reminder emails come only for shows he tapped "Remind me" or "Going", so his inbox never feels like spam.</li>
+    <li>Karan's screen shows what to grab now, every upcoming show by city, a 6-month calendar, his plans, and proof of every Google search.</li>
+    <li>The owl is just for fun: it flies up and down and says when the app last checked.</li>
+    <li>Karan taps "Got early-bird", "Going", "Remind me" or "Skip" (with a confetti burst), and the app reminds him only about what he cares about.</li>
+  </ol>
+</div>
+
+</body>
+</html>
