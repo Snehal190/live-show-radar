@@ -144,7 +144,7 @@ export const syncLog = pgTable(
   {
     id: serial("id").primaryKey(),
     kind: text("kind", { enum: ["serpapi", "gemini_web", "gemini", "scan", "reset", "email"] }).notNull(),
-    trigger: text("trigger"), // cron | manual | catchup | seed
+    trigger: text("trigger"), // cron | manual | catchup | seed | self-heal
     startedAt: ts("started_at").notNull().defaultNow(),
     finishedAt: ts("finished_at"),
     description: text("description"),
